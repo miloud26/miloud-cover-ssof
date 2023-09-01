@@ -1,0 +1,144 @@
+/* import font from google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap");
+
+/* import tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* global css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: 0;
+  border: none;
+  outline: 0;
+  font-family: "Poppins", sans-serif !important;
+  line-height: 1.5px;
+}
+html {
+  scroll-behavior: smooth;
+  direction: rtl !important;
+  width: 100%;
+}
+body {
+  overflow: hidden;
+  overflow-y: auto;
+}
+.arabic {
+  font-family: "Noto Naskh Arabic", serif !important;
+  /*direction: rtl !important;*/
+}
+
+/* css for section & components niche card */
+.card-niche::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  z-index: 20;
+  transition: 0.5s;
+}
+.card-niche:hover::after {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.card-niche > img {
+  transition: 0.5s;
+}
+.card-niche:hover > img {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.card-item {
+  border: 0.5px solid rgba(147, 147, 185, 0.37);
+}
+
+/* gallry style */
+.galory-class {
+  width: 300px !important;
+  height: 300px !important;
+  overflow: hidden;
+  position: relative;
+}
+.galory-class img {
+  transition: 1.5s;
+}
+.galory-class::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #33333380;
+  transition: 1.3s;
+}
+.galory-class:hover img {
+  transform: scale(1.3);
+}
+.galory-class:hover ::after {
+  transform: scale(1.3);
+  background-color: #3333331f;
+}
+
+/* partners */
+.slider-custom {
+  width: 200px !important;
+  height: 60px !important;
+  margin-right: 89px !important;
+}
+
+/* form contact on contact page */
+.form-contact {
+  border: 1px rgba(121, 121, 185, 0.432) solid;
+}
+.textArea {
+  border: 1px rgba(121, 121, 185, 0.432) solid;
+}
+
+/* slider part overly - video */
+.overBg {
+  position: relative;
+}
+.overBg::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+/*  animation of btn buy now*/
+.btn-buynow {
+  animation-name: buyNow;
+  animation-duration: 1s;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  z-index: 1000;
+}
+
+@keyframes buyNow {
+  0% {
+    translate: 0 0;
+  }
+  50% {
+    translate: -10px 0;
+  }
+  75% {
+    translate: 10px 0;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+.valid {
+  border: 2px yellow solid !important;
+}
