@@ -11,17 +11,27 @@ import {
   Radio,
   FormControl,
   RadioGroup,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 
 import Review from "@/components/Review";
+import { wilayaCommuneInfo } from "../../../data";
 
 type ProductType = {
   params: { id: string };
 };
+const wilayaInfo = wilayaCommuneInfo.map((item) => {
+  const { id, name } = item;
+  return { id, name };
+});
 
 export default function Page({ params }: ProductType) {
+  const [error, setError] = useState(false);
+  const [btnDisebled, setBtnDisebled] = useState(false);
   const [orderId, setOrderId] = useState("");
   const unique = new Date().getTime().toString();
   const createOrder = async () => {
@@ -77,6 +87,10 @@ export default function Page({ params }: ProductType) {
   const [model, setModel] = useState("");
   const [prixDelevred, setPrixDelevred] = useState(500);
 
+  const communeInfo = Object.values(
+    wilayaCommuneInfo.filter((item) => item.name === wilaya)[0]
+  );
+
   const updateOrder = () => {
     setTimeout(async () => {
       console.log(orderId);
@@ -124,44 +138,52 @@ export default function Page({ params }: ProductType) {
   const handleSubmitOrder = async (e: any) => {
     e.preventDefault();
     deleteOrder();
-
-    const dateNewOrder = new Date().getTime().toString();
-    const lastOrder = localStorage.getItem("dateMakeOrder");
-
-    let timeDeffrent = 0;
-    if (lastOrder) {
-      timeDeffrent = +dateNewOrder - +lastOrder;
+    if (!phone) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
     } else {
-      timeDeffrent = +dateNewOrder;
-    }
+      setBtnDisebled(true);
+      const dateNewOrder = new Date().getTime().toString();
+      const lastOrder = localStorage.getItem("dateMakeOrder");
 
-    localStorage.setItem("dateMakeOrder", dateNewOrder);
+      let timeDeffrent = 0;
+      if (lastOrder) {
+        timeDeffrent = +dateNewOrder - +lastOrder;
+      } else {
+        timeDeffrent = +dateNewOrder;
+      }
 
-    try {
-      const data = new FormData();
-      data.append(
-        "date",
-        `${new Date().getDate()}/${
-          new Date().getMonth() + 1
-        } - ${new Date().getHours()}H : ${new Date().getMinutes()}M`
-      );
-      data.append("name", name);
-      data.append("phone", `\`${phone}`);
-      data.append("wilaya", wilaya);
-      data.append("adress", adress);
-      data.append("product", dataProduct.titleFr);
-      data.append("quantity", quantity.toString());
-      data.append("model", model);
-      data.append("prix", quantity == 1 ? "3600" : "5800");
-      data.append("upsell", timeDeffrent <= 5 * 60 * 60 * 1000 ? "oui" : "");
+      localStorage.setItem("dateMakeOrder", dateNewOrder);
 
-      await fetch(sheet, {
-        method: "POST",
-        body: data,
-      });
-      handleOpen();
-    } catch (error) {
-      console.log(error);
+      try {
+        const data = new FormData();
+        data.append(
+          "date",
+          `${new Date().getDate()}/${
+            new Date().getMonth() + 1
+          } - ${new Date().getHours()}H : ${new Date().getMinutes()}M`
+        );
+        data.append("name", name);
+        data.append("phone", `\'${phone}`);
+        data.append("wilaya", wilaya);
+        data.append("adress", adress);
+        data.append("product", dataProduct.titleFr);
+        data.append("quantity", quantity.toString());
+        data.append("model", model);
+        data.append("prix", quantity == 1 ? "3600" : "5800");
+        data.append("upsell", timeDeffrent <= 5 * 60 * 60 * 1000 ? "oui" : "");
+
+        await fetch(sheet, {
+          method: "POST",
+          body: data,
+        });
+        handleOpen();
+        setBtnDisebled(false);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -279,7 +301,7 @@ export default function Page({ params }: ProductType) {
             </Typography>
             <Typography className="text-[24px] font-bold w-full mt-3 text-blue-400">
               {dataProduct?.prix}
-              {lang ? "دج" : "DA"}
+              {lang ? " دج " : " DA "}
             </Typography>
           </Box>
           <Box>
@@ -298,6 +320,7 @@ export default function Page({ params }: ProductType) {
                   className="mb-3"
                 />
                 <TextField
+                  required
                   onChange={(e) => {
                     setPhone(e.target.value);
                     updateOrder();
@@ -307,23 +330,52 @@ export default function Page({ params }: ProductType) {
                 />
               </Box>
               <Box className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-3">
-                <TextField
-                  onChange={(e) => {
-                    setWilaya(e.target.value);
-                    updateOrder();
-                  }}
-                  placeholder={lang ? "الولاية" : "Wilaya"}
-                  label={lang ? "الولاية" : "Wilaya"}
-                  className="mb-3"
-                />
-                <TextField
-                  placeholder={lang ? "العنوان" : "Adresse"}
-                  label={lang ? "العنوان" : "Adresse"}
-                  onChange={(e) => {
-                    setAdress(e.target.value);
-                    updateOrder();
-                  }}
-                />
+                <FormControl fullWidth>
+                  <InputLabel>{lang ? "الولاية" : "Wilaya"}</InputLabel>
+                  <Select
+                    sx={{ direction: "ltr" }}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={wilaya}
+                    label="Wilaya"
+                    onChange={(e) => setWilaya(e.target.value)}
+                  >
+                    {wilayaInfo.slice(1).map((item, index) => {
+                      return (
+                        <MenuItem
+                          sx={{ direction: "ltr" }}
+                          key={index}
+                          value={item.name}
+                        >
+                          {item.id} - {item.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel>{lang ? "البلدية" : "Commune"}</InputLabel>
+                  <Select
+                    sx={{ direction: "ltr" }}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={adress}
+                    label="Commune"
+                    onChange={(e) => setAdress(e.target.value)}
+                  >
+                    {communeInfo.slice(2).map((item, index) => {
+                      return (
+                        <MenuItem
+                          sx={{ direction: "ltr" }}
+                          key={index}
+                          value={item}
+                        >
+                          {item}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
               </Box>
               <Box className="my-6 w-full p-4  bg-[#dbeafe] rounded-lg">
                 <Box className="w-fulll flex justify-between items-center mb-7">
@@ -441,6 +493,7 @@ export default function Page({ params }: ProductType) {
               </Box>
               <Box className="w-full flex justify-between items-center ">
                 <Button
+                  disabled={btnDisebled}
                   className="font-bold w-[55%] ml-1 mt-3 py-[8px] text-black hover:bg-[#dbeafe] bg-[#dbeafe] "
                   variant="contained"
                   type="submit"
@@ -477,6 +530,11 @@ export default function Page({ params }: ProductType) {
                 </Box>
               </Box>
             </form>
+            {error && (
+              <span style={{ color: "red", fontSize: "14px" }}>
+                Please Check Your Information !
+              </span>
+            )}
             <Box className="mt-8">
               {" "}
               <img
