@@ -505,7 +505,7 @@ export const wilayaCommuneInfo = [
   },
   {
     id: 13,
-    name: "",
+    name: "Tlemcen",
     com1: "Ain Fettah ",
     com2: "Ain Fezza",
     com3: "Ain Ghoraba",
