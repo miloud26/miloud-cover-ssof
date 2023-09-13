@@ -330,7 +330,7 @@ export default function Page({ params }: ProductType) {
                 />
               </Box>
               <Box className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-3">
-                <FormControl fullWidth>
+                <FormControl fullWidth sx={{ marginBottom: "15px" }}>
                   <InputLabel>{lang ? "الولاية" : "Wilaya"}</InputLabel>
                   <Select
                     sx={{ direction: "ltr" }}
