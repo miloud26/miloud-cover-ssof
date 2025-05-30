@@ -16,8 +16,6 @@ import {
   InputLabel,
 } from "@mui/material";
 import Link from "next/link";
-import Image from "next/image";
-const upsellProduct: boolean = false;
 
 import Review from "@/components/Review";
 import { wilayaCommuneInfo } from "../../../data";
@@ -134,9 +132,9 @@ export default function Page({ params }: ProductType) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleModel = (e: any) => {
-    e.target.classList.toggle("valid");
-  };
+  // const handleModel = (e: any) => {
+  //   e.target.classList.toggle("valid");
+  // };
 
   const handleSubmitOrder = async (e: any) => {
     e.preventDefault();
@@ -219,58 +217,18 @@ export default function Page({ params }: ProductType) {
               p: 4,
             }}
           >
-            {upsellProduct && (
-              <Box>
-                <Box>
-                  <Typography className="text-3xl text-center font-bold w-full mb-6">
-                    {lang ? upsellProduct?.titleAr : upsellProduct?.titleFr}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Image
-                    src={upsellProduct?.image}
-                    alt={upsellProduct?.titleFr}
-                    width={600}
-                    height={600}
-                    className="rounded-lg"
-                  />
-                  <Link
-                    target="_blank"
-                    href={`/products/${dataProduct?.upsellId}`}
-                  >
-                    <Box className="mt-5 flex justify-center items-center w-full">
-                      {" "}
-                      <Button
-                        className="block w-full font-bold py-[8px] text-black hover:bg-[#dbeafe] bg-[#dbeafe] mx-[12px] "
-                        variant="contained"
-                      >
-                        {lang ? "استفد من العرض" : "Profitez de l'offre"}
-                      </Button>
-                    </Box>
-                  </Link>
-                </Box>
-              </Box>
-            )}
             <Box
               flexDirection={"column"}
               className="mt-5 flex justify-center items-center w-full"
             >
-              {!upsellProduct && (
-                <Typography className="text-center text-lg mb-6">
-                  {lang
-                    ? "لقد تم استلام طلبك سنتصل بك للتأكيد في اقرب وقت"
-                    : "Votre demande a bien été reçue, nous vous contacterons pour confirmer dans les plus brefs délais"}
-                </Typography>
-              )}
               <Link href="/shop">
                 {" "}
                 <Button
                   className="block font-bold w-full py-[8px] text-black hover:bg-[#dbeafe] bg-[#dbeafe] mx-[12px] "
                   variant="contained"
                 >
-                  {upsellProduct
-                    ? `${lang ? "لا شكرا" : "Non, Merci"} `
-                    : `${lang ? "تسوق الان" : "Achetez maintenant"}`}
+                  {lang ? "لا شكرا" : "Non, Merci"} `
+                  {lang ? "تسوق الان" : "Achetez maintenant"}
                 </Button>
               </Link>
             </Box>
@@ -316,7 +274,7 @@ export default function Page({ params }: ProductType) {
                 <TextField
                   onChange={(e) => {
                     setName(e.target.value);
-                    updateOrder();
+                    // updateOrder();
                   }}
                   placeholder={lang ? "الاسم الكامل" : "Full Name"}
                   label={lang ? "الاسم الكامل" : "Nom & Prenom"}
@@ -326,7 +284,7 @@ export default function Page({ params }: ProductType) {
                   required
                   onChange={(e) => {
                     setPhone(e.target.value);
-                    updateOrder();
+                    // updateOrder();
                   }}
                   placeholder={lang ? "رقم الهاتف" : "Phone Number"}
                   label={lang ? "رقم الهاتف" : "Telephone"}
