@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/store";
 const ProductCard = ({
-  id,
   titleFr,
   titleAr,
   category,
@@ -30,10 +29,10 @@ const ProductCard = ({
       </Typography>
       <Typography className="mt-4 font-bold text-lg mb-6">
         {prix}
-        {lang ? "دج" : "DA"}{" "}
+        {lang ? " دج " : " DA "}{" "}
       </Typography>
 
-      <Link href={`/products/${id}`}>
+      <Link href={`/products/${titleFr.replace(/\s+/g, "")}`}>
         <Button
           className="bg-[#dbeafe] text-black text-[15px] md:text-[15px] font-bold hover:bg-[#dbeafe] w-full mb-8"
           variant="contained"

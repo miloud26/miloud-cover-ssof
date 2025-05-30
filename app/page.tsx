@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Galory from "@/components/Gallery";
 import Niches from "@/components/Niches";
 import ProductsSection from "@/components/ProductsSection";
@@ -7,6 +7,7 @@ import Slider from "@/components/Slider";
 import { Box } from "@mui/material";
 import { partners } from "../data";
 import { useGlobalContext } from "@/context/store";
+import { faker } from "@faker-js/faker";
 
 export default function Home() {
   const { lang, dataProducts } = useGlobalContext();

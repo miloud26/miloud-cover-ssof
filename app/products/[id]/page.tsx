@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
+const upsellProduct: boolean = false;
 
 import Review from "@/components/Review";
 import { wilayaCommuneInfo } from "../../../data";
@@ -32,52 +33,54 @@ const wilayaInfo = wilayaCommuneInfo.map((item) => {
 export default function Page({ params }: ProductType) {
   const [error, setError] = useState(false);
   const [btnDisebled, setBtnDisebled] = useState(false);
-  const [orderId, setOrderId] = useState("");
-  const unique = new Date().getTime().toString();
-  const createOrder = async () => {
-    const order = {
-      unique,
-      name: "",
-      number: "",
-      wilaya: "",
-      adress: "",
-    };
-    await fetch("https://ecom-api-miloud.onrender.com/order", {
-      method: "POST",
-      body: JSON.stringify(order),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
+  // const [orderId, setOrderId] = useState("");
+  // const unique = new Date().getTime().toString();
+  // const createOrder = async () => {
+  //   const order = {
+  //     unique,
+  //     name: "",
+  //     number: "",
+  //     wilaya: "",
+  //     adress: "",
+  //   };
+  //   await fetch("https://ecom-api-miloud.onrender.com/order", {
+  //     method: "POST",
+  //     body: JSON.stringify(order),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  // };
 
-  const getOrder = async () => {
-    const order = await fetch(`https://ecom-api-miloud.onrender.com/order`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const allOrders = await order.json();
-    const tempOrderId = allOrders.orders.filter(
-      (item: any) => item.unique == unique
-    );
+  // const getOrder = async () => {
+  //   const order = await fetch(`https://ecom-api-miloud.onrender.com/order`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   const allOrders = await order.json();
+  //   const tempOrderId = allOrders.orders.filter(
+  //     (item: any) => item.unique == unique
+  //   );
 
-    setOrderId(tempOrderId[0]?._id.toString());
-  };
-  useEffect(() => {
-    createOrder();
-    getOrder();
-  }, []);
+  //   setOrderId(tempOrderId[0]?._id.toString());
+  // };
+  // useEffect(() => {
+  //   createOrder();
+  //   getOrder();
+  // }, []);
 
   const { dataProducts, lang, sheet } = useGlobalContext();
+
   const dataProduct = dataProducts.filter(
-    (item) => item.id.toString() == params.id.toString()
+    (item) =>
+      item.titleFr.replace(/\s+/g, "").toString() === params.id.toString()
   )[0];
 
-  const upsellProduct = dataProducts
-    .filter((item) => item.id.toString() == dataProduct.upsellId.toString())
-    .slice(0, 1)[0];
+  // const upsellProduct = dataProducts
+  //   .filter((item) => item.id.toString() == dataProduct.upsellId.toString())
+  //   .slice(0, 1)[0];
 
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -91,33 +94,33 @@ export default function Page({ params }: ProductType) {
     wilayaCommuneInfo.filter((item) => item.name === wilaya)[0]
   );
 
-  const updateOrder = () => {
-    setTimeout(async () => {
-      console.log(orderId);
-      await fetch(`https://ecom-api-miloud.onrender.com/order/${orderId}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          name,
-          number: phone,
-          wilaya,
-          adress,
-          product: dataProduct?.titleFr,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }, 4000);
-  };
-  const deleteOrder = async () => {
-    await fetch(`https://ecom-api-miloud.onrender.com/order/${orderId}`, {
-      method: "DELETE",
+  // const updateOrder = () => {
+  //   setTimeout(async () => {
+  //     console.log(orderId);
+  //     await fetch(`https://ecom-api-miloud.onrender.com/order/${orderId}`, {
+  //       method: "PATCH",
+  //       body: JSON.stringify({
+  //         name,
+  //         number: phone,
+  //         wilaya,
+  //         adress,
+  //         product: dataProduct?.titleFr,
+  //       }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //   }, 4000);
+  // };
+  // const deleteOrder = async () => {
+  //   await fetch(`https://ecom-api-miloud.onrender.com/order/${orderId}`, {
+  //     method: "DELETE",
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  // };
 
   useEffect(() => {
     if (quantity > 1) {
@@ -137,7 +140,7 @@ export default function Page({ params }: ProductType) {
 
   const handleSubmitOrder = async (e: any) => {
     e.preventDefault();
-    deleteOrder();
+    //deleteOrder();
     if (!phone) {
       setError(true);
       setTimeout(() => {
@@ -412,32 +415,7 @@ export default function Page({ params }: ProductType) {
                   </Typography>
                 </Box>
               </Box>
-              <Box
-                flexDirection={"row"}
-                className="flex justify-center items-center"
-              >
-                <Box
-                  onClick={(e) => {
-                    handleModel(e);
-                    setModel("bleu");
-                  }}
-                  className="bg-[#318ce7] w-[50px] h-[40px] mr-4"
-                ></Box>
-                <Box
-                  onClick={(e) => {
-                    handleModel(e);
-                    setModel("marron");
-                  }}
-                  className="bg-[#c0874f] w-[50px] h-[40px] mr-4"
-                ></Box>
-                <Box
-                  onClick={(e) => {
-                    handleModel(e);
-                    setModel("rose");
-                  }}
-                  className="bg-[#fd6c9e] w-[50px] h-[40px] mr-4"
-                ></Box>
-              </Box>
+
               <Box className="my-6 w-full p-4  bg-[#dbeafe] rounded-lg mt-5">
                 <Box className="w-fulll flex justify-between items-center ">
                   <FormControl>

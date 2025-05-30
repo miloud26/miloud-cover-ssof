@@ -7,6 +7,8 @@ import { useGlobalContext } from "@/context/store";
 
 const Shop = () => {
   const { dataProducts } = useGlobalContext();
+
+  console.log(dataProducts);
   const [page, setPage] = useState(1);
   const handleClick = (e: any) => {
     setPage(parseInt(e.target?.textContent));

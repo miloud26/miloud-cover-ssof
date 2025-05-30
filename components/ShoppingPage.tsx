@@ -37,8 +37,8 @@ const ShoppingPage = ({
       </Box>
 
       <Box className="mt-12 grid grid-cols-1 sm:grid-cols-2  gap-x-5 gap-y-7 lg:grid-cols-3 xl:grid-cols-4 px-[10px]  ">
-        {data.map((item) => {
-          return <ProductCard key={item.id} {...item} />;
+        {data.map((item, i) => {
+          return <ProductCard key={i} {...item} />;
         })}
       </Box>
     </Box>

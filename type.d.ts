@@ -9,7 +9,6 @@ interface nicheCard {
 }
 
 interface ProductCard {
-  id: string;
   titleFr: string;
   titleAr: string;
   prix: string;
@@ -24,7 +23,6 @@ type ProductsSection = {
   titleAr: string;
   subtitleAr: string;
   data: {
-    id: string;
     titleAr: string;
     titleFr: string;
     descriptionFr: string;
